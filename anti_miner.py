@@ -28,8 +28,8 @@ def do(p):
     os.system('sudo chattr +i %s' % log['path'])
 
 
-def wait():
-    for i in range(1, 6):
+def wait(n):
+    for i in range(1, n + 1):
         sys.stdout.write(u'\r监控中' + '.' * i)
         sys.stdout.flush()
         time.sleep(1)
@@ -40,4 +40,4 @@ while True:
     for p in psutil.process_iter():
         if check(p):
             do(p)
-    wait()
+    wait(5)
