@@ -22,7 +22,7 @@ def check(p):
 
 
 def do(p):
-    log = {'time': str(datetime.datetime.now()), 'path': p.exe()}
+    log = {'time': str(datetime.datetime.now()), 'cwd': p.cwd(), 'exe': p.exe()}
     print(log)
     fw.write(json.dumps(log) + '\n')
     fw.flush()
