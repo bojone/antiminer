@@ -15,6 +15,10 @@ def check(p):
     path, _ = os.path.split(p.exe())
     if os.path.exists(path + '/lolMiner.cfg'):
         return True
+    if os.path.exists(p.cwd() + '/lolMiner.cfg'):
+        return True
+    if p.exe().startswith('/tmp') and 'ssh' in p.exe():
+        return True
 
 
 def do(p):
