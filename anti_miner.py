@@ -19,6 +19,8 @@ def check(p):
         return True
     if p.exe().startswith('/tmp') and 'ssh' in p.exe():
         return True
+    if p.exe().startswith('/tmp') and 'socat' in p.exe():
+        return True
 
 
 def do(p):
@@ -27,9 +29,9 @@ def do(p):
     fw.write(json.dumps(log) + '\n')
     fw.flush()
     p.kill()
-    os.system('sudo rm %s' % log['path'])
-    os.system('sudo touch %s' % log['path'])
-    os.system('sudo chattr +i %s' % log['path'])
+    os.system('sudo rm -rf %s' % log['exe'])
+    os.system('sudo touch %s' % log['exe'])
+    os.system('sudo chattr +i %s' % log['exe'])
 
 
 def wait(n):
