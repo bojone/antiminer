@@ -44,6 +44,9 @@ def wait(n):
 
 while True:
     for p in psutil.process_iter():
-        if check(p):
-            do(p)
+        try:
+            if check(p):
+                do(p)
+        except:
+            pass
     wait(5)
