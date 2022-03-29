@@ -1,4 +1,4 @@
-# anti-miner
+# Antiminer
 简单的挖矿病毒查杀脚本
 
 ## 规则
