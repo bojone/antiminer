@@ -10,7 +10,7 @@
 ## 运行
 
 ```shell
-sudo python anti_miner.py
+sudo python antiminer.py
 ```
 
 ## 交流
