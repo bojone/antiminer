@@ -14,24 +14,29 @@ fw = open('kill.log', 'a+')
 def check(p):
     path, _ = os.path.split(p.exe())
     if os.path.exists(path + '/lolMiner.cfg'):
-        return True
+        return 1
     if os.path.exists(p.cwd() + '/lolMiner.cfg'):
-        return True
+        return 2
     if p.exe().startswith('/tmp') and 'ssh' in p.exe():
-        return True
+        return 2
     if p.exe().startswith('/tmp') and 'socat' in p.exe():
-        return True
+        return 2
+    return 0
 
 
 def do(p):
+    code = check(p)
+    if code == 0:
+        return None
     log = {'time': str(datetime.datetime.now()), 'cwd': p.cwd(), 'exe': p.exe()}
     print(log)
     fw.write(json.dumps(log) + '\n')
     fw.flush()
     p.kill()
-    os.system('sudo rm -rf %s' % log['exe'])
-    os.system('sudo touch %s' % log['exe'])
-    os.system('sudo chattr +i %s' % log['exe'])
+    if code == 1:
+        os.system('sudo rm -rf %s' % log['exe'])
+        os.system('sudo touch %s' % log['exe'])
+        os.system('sudo chattr +i %s' % log['exe'])
 
 
 def wait(n):
@@ -45,8 +50,7 @@ def wait(n):
 while True:
     for p in psutil.process_iter():
         try:
-            if check(p):
-                do(p)
+            do(p)
         except:
             pass
     wait(5)
