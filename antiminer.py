@@ -44,7 +44,7 @@ def wait(n):
         sys.stdout.write(u'\r监控中' + '.' * i)
         sys.stdout.flush()
         time.sleep(1)
-    sys.stdout.write('\r' + ' ' * 100 + '\r')
+    sys.stdout.write('\x1b[1K\r')
 
 
 while True:
