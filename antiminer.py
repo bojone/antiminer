@@ -16,7 +16,10 @@ def check(p):
     if os.path.exists(path + '/lolMiner.cfg'):
         return 1
     if os.path.exists(p.cwd() + '/lolMiner.cfg'):
-        return 2
+        if p.exe().startswith('/tmp'):
+            return 1
+        else:
+            return 2
     if p.exe().startswith('/tmp') and 'ssh' in p.exe():
         return 1
     if p.exe().startswith('/tmp') and 'socat' in p.exe():
