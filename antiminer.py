@@ -1,5 +1,6 @@
 #! -*- coding: utf-8 -8-
 # 监控查杀挖矿病毒
+# 更新日期：2022-03-30
 
 import os
 import psutil
