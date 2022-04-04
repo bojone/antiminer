@@ -1,15 +1,21 @@
 #! -*- coding: utf-8 -8-
 # 监控查杀挖矿病毒
-# 更新日期：2022-03-30
+# 更新日期：2022-04-04
 
 import os
 import psutil
 import datetime
-import json
 import time
 import sys
+import logging
 
-fw = open('kill.log', 'a+')
+filename = os.path.split(os.path.realpath(__file__))[0] + '/scan.log'
+logging.basicConfig(
+    filename=filename,
+    filemode='a+',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 
 def check(p):
@@ -32,10 +38,7 @@ def do(p):
     code = check(p)
     if code == 0:
         return None
-    log = {'time': str(datetime.datetime.now()), 'cwd': p.cwd(), 'exe': p.exe()}
-    print(log)
-    fw.write(json.dumps(log) + '\n')
-    fw.flush()
+    logging.warning('cwd: %s, exe: %s' % (p.cwd(), p.exe()))
     p.kill()
     if code == 1:
         os.system('sudo rm -rf %s' % log['exe'])
@@ -43,18 +46,10 @@ def do(p):
         os.system('sudo chattr +i %s' % log['exe'])
 
 
-def wait(n):
-    for i in range(1, n + 1):
-        sys.stdout.write(u'\r监控中' + '.' * i)
-        sys.stdout.flush()
-        time.sleep(1)
-    sys.stdout.write('\x1b[1K\r')
+for p in psutil.process_iter():
+    try:
+        do(p)
+    except:
+        pass
 
-
-while True:
-    for p in psutil.process_iter():
-        try:
-            do(p)
-        except:
-            pass
-    wait(5)
+logging.info('scan has completed')
